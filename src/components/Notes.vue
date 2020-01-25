@@ -16,6 +16,29 @@
 
                   <v-card-text v-html="note.text.replace('\n','</br>')">
                   </v-card-text>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on }">                        
+                        <v-btn icon v-on="on" @click="editNote(index)">
+                          <v-icon>mdi-pencil</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>editar</span>
+                    </v-tooltip>
+
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on }">
+                        <v-btn icon v-on="on" @click="deleteNote(index)">
+                          <v-icon>mdi-delete</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>remover</span>
+                    </v-tooltip>
+                  </v-card-actions>
+
                 </v-card>
               </v-col>
             </v-row>
@@ -58,7 +81,7 @@
                 <v-btn
                   dark
                   text
-                  @click="addNote">
+                  @click="saveNote">
                   Salvar
                 </v-btn>
               </v-toolbar-items>
@@ -114,7 +137,7 @@ export default {
         title: 'Notas da aula',
         text: 'Mussum Ipsum, cacilds vidis litro abertis. Quem manda na minha terra sou euzis! Si u mundo tá muito paradis? Toma um mé que o mundo vai girarzis! Posuere libero varius. Nullam a nisl ut ante blandit hendrerit. Aenean sit amet nisi. In elementis mé pra quem é amistosis quis leo.',
         style: {
-          bg: "#385F73",
+          bg: "green",
           darken: true,
           selected: false
         }
@@ -134,17 +157,17 @@ export default {
       },
       {
         bg: "red",
-        darken: false,
+        darken: true,
         selected: false
       },
       {
         bg: "light-blue",
-        darken: false,
+        darken: true,
         selected: false
       },
       {
         bg: "teal",
-        darken: false,
+        darken: true,
         selected: false
       },
       {
@@ -154,18 +177,22 @@ export default {
       },
       {
         bg: "green",
-        darken: false,
+        darken: true,
         selected: false
       }
     ]
   }),
   methods: {
-    addNote() {
-      let newNote = {}
-      newNote = Object.assign(newNote, this.note)
-      if (newNote.title && newNote.text) {
-        newNote.created = new Date();
-        this.notes.push(newNote);
+    saveNote() {
+      let note = {}
+      note = Object.assign(note, this.note)
+      if (note.title && note.text) {
+        note.created = new Date();
+        if (note.index >= 0) {
+          this.notes[note.index] = note;
+        } else {
+          this.notes.push(note);
+        }
         this.buttonNewNote = false;
         this.clearNote()
       }
@@ -183,7 +210,24 @@ export default {
     },
     openNewNote() {
       this.buttonNewNote = true;
-      this.selectColor(0);
+      if (this.note.style) {
+        let index = this.styles.findIndex( s => s.bg === this.note.style.bg)
+        this.selectColor(index);
+        console.log('index=>',  index)
+      } else {
+        this.selectColor(0);
+      }
+    },
+    editNote(index) {
+      console.log('edit', index)
+      this.note = this.notes[index];
+      this.note.index = index;
+      this.openNewNote();
+    },
+    deleteNote(index) {
+      console.log('delete', index)
+      this.notes.splice(index, 1);
+      console.log(this.notes)
     }
   }
 };
