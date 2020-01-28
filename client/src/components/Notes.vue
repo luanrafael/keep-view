@@ -147,7 +147,8 @@ export default {
       title: null,
       text: null,
       created: null,
-      style: null
+      style: null,
+      index: null
     },
     styles: [
       {
@@ -188,7 +189,8 @@ export default {
       note = Object.assign(note, this.note)
       if (note.title && note.text) {
         note.created = new Date();
-        if (note.index >= 0) {
+        console.log(note);
+        if (note.index !== null && note.index >= 0) {
           this.notes[note.index] = note;
         } else {
           this.notes.push(note);
