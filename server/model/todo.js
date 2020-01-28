@@ -12,7 +12,7 @@ const todoSchema = new mongoose.Schema({
           },
           selected: {
               type: Boolean,
-              default: true
+              default: false
           },
     }
 })
