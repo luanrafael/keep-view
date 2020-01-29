@@ -119,6 +119,7 @@
 </template>
 
 <script>
+import api from '../services/api'
 export default {
   name: 'Notes',
   data: () => ({
@@ -183,7 +184,15 @@ export default {
       }
     ]
   }),
+  mouted () {
+    this.getNotes()
+  },
   methods: {
+    async getNotes() {
+      var todos = await api.getTodos()
+      // this.notes = todos.data
+      console.log(todos.data)      
+    },
     saveNote() {
       let note = {}
       note = Object.assign(note, this.note)
