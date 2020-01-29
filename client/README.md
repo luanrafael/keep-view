@@ -19,3 +19,8 @@ yarn run build
 ```
 yarn run lint
 ```
+
+### add pwa support
+```
+vue add @vue/pwa
+```
